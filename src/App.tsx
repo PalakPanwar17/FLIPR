@@ -1,3 +1,4 @@
+import Projects from "@/components/Projects";
 import React from "react";
 import {
   BrowserRouter as Router,
