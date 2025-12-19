@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { supabase } from '@/db/supabase';
 import type { User } from '@supabase/supabase-js';
-import type { Profile } from '@/types/types';
+// import type { Profile } from '@/types/types';
 
-export async function getProfile(userId: string): Promise<Profile | null> {
+export async function getProfile(userId: string): Promise<any | null> {
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
@@ -18,7 +18,7 @@ export async function getProfile(userId: string): Promise<Profile | null> {
 }
 interface AuthContextType {
   user: User | null;
-  profile: Profile | null;
+  profile: any | null;
   loading: boolean;
   signIn: (username: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (username: string, password: string) => Promise<{ error: Error | null }>;
@@ -30,7 +30,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   const refreshProfile = async () => {
@@ -101,7 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signInWithUsername, signUpWithUsername, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, loading, signIn: signInWithUsername, signUp: signUpWithUsername, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );
